@@ -1,0 +1,29 @@
+# Dependencias de Node.js
+node_modules/
+
+# Logs
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+
+# Variables de entorno y configuración sensible
+.env
+db.config
+*.env
+
+# Archivos del sistema
+.DS_Store
+Thumbs.db
+
+# Archivos de editor / IDE
+.vscode/
+.idea/
+*.swp
+
+# Build / dist (por si más adelante los usas)
+dist/
+build/
+
+# Cobertura de tests
+coverage/
+``

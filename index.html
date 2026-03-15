@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="es">
+<head><meta charset="UTF-8"><title>Movimientos</title></head>
+<body>
+  <h1>Movimientos</h1>
+  <p>Total registrado: <strong id="total"></strong></p>
+
+  <table border="1" id="tabla">
+    <thead><tr><th>Fecha</th><th>Motivo</th><th>Cantidad</th></tr></thead>
+    <tbody></tbody>
+  </table>
+
+  <script>
+    async function cargarTotal() {
+      const res = await fetch('/total');
+      const totalData = await res.json();
+      document.getElementById('total').textContent = totalData.total || totalData['SUM(Cantidad)'];
+    }
+
+    async function cargarMovimientos() {
+      const res = await fetch('/movimientos');
+      const movimientos = await res.json();
+      const tabla = document.querySelector('#tabla tbody');
+      tabla.innerHTML = '';
+
+      movimientos.forEach(mov => {
+        const tr = document.createElement('tr');
+        tr.innerHTML = `
+          <td>${new Date(mov.Fecha).toLocaleString()}</td>
+          <td>${mov.Motivo}</td>
+          <td>${mov.Cantidad}</td>
+        `;
+        tabla.appendChild(tr);
+      });
+    }
+
+    cargarTotal();
+    cargarMovimientos();
+  </script>
+</body>
+</html>
