@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     try {
 
         const result = await pool.query(
-        "SELECT SUM(Cantidad) AS total FROM Movimientos"
+        "SELECT SUM(Cantidad) AS total FROM movimientos"
         );
 
         res.status(200).json(result.rows[0]);

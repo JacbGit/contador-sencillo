@@ -28,9 +28,9 @@
       movimientos.forEach(mov => {
         const tr = document.createElement('tr');
         tr.innerHTML = `
-          <td>${new Date(mov.Fecha).toLocaleString()}</td>
-          <td>${mov.Motivo}</td>
-          <td>${mov.Cantidad}</td>
+          <td>${new Date(mov.fecha).toLocaleString()}</td>
+          <td>${mov.motivo}</td>
+          <td>${mov.cantidad}</td>
         `;
         tabla.appendChild(tr);
       });

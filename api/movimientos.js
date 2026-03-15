@@ -8,7 +8,7 @@ module.exports = async (req, res) => {
     try {
 
         const result = await pool.query(
-        "SELECT * FROM Movimientos ORDER BY Fecha DESC"
+        "SELECT * FROM movimientos ORDER BY Fecha DESC"
         );
 
         res.status(200).json(result.rows);
