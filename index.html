@@ -224,7 +224,7 @@ document.getElementById('filtroCategoria').addEventListener('change', e => {
   }
 
   const filtrados = movimientosGlobal.filter(
-    m => m.categoria == categoria
+    m => m.categoria_id == categoria
   );
 
   renderTabla(filtrados);
