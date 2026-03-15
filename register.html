@@ -32,7 +32,7 @@
     form.addEventListener('submit', async e => {
       e.preventDefault();
       const motivo = document.getElementById('motivo').value;
-      const cantidad = parseFloat(document.getElementById('cantidad').value);
+      let cantidad = parseFloat(document.getElementById('cantidad').value);
       const categoria = document.getElementById('categoria').value;
 
       if(categoria != 1){
