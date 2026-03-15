@@ -15,7 +15,7 @@ module.exports = async (req, res) => {
         const { motivo, cantidad } = req.body;
 
         await pool.query(
-        "INSERT INTO Movimientos (Fecha, Motivo, Cantidad) VALUES (NOW(), $1, $2)",
+        "INSERT INTO movimientos (fecha, motivo, cantidad) VALUES (NOW(), $1, $2)",
         [motivo, cantidad]
         );
 
