@@ -10,15 +10,17 @@
     <tbody></tbody>
   </table>
 
+  <a href="/register.html">Registrar movimiento</a>
+
   <script>
     async function cargarTotal() {
-      const res = await fetch('/total');
+      const res = await fetch('/api/total');
       const totalData = await res.json();
       document.getElementById('total').textContent = totalData.total || totalData['SUM(Cantidad)'];
     }
 
     async function cargarMovimientos() {
-      const res = await fetch('/movimientos');
+      const res = await fetch('/api/movimientos');
       const movimientos = await res.json();
       const tabla = document.querySelector('#tabla tbody');
       tabla.innerHTML = '';

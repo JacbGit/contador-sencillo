@@ -6,20 +6,7 @@ const path = require('path')
 const app = express()
 const PORT = 3000
 
-//.config file parser
-function loadConfig(filePath) {
-  const content = fs.readFileSync(filePath, 'utf-8')
-  const config = {}
-
-  content.split('\n').forEach(line => {
-    line = line.trim()
-    if (!line || line.startsWith('[') || line.startsWith('#')) return
-    const [key, ...rest] = line.split('=')
-    config[key.trim()] = rest.join('=').trim()
-  })
-
-  return config
-}
+const config = loadConfig();
 
 const dbConfig = loadConfig(path.join(__dirname, 'db.config'))
 

@@ -16,7 +16,7 @@
       const motivo = document.getElementById('motivo').value;
       const cantidad = parseFloat(document.getElementById('cantidad').value);
 
-      await fetch('/register_event', {
+      await fetch('api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ motivo, cantidad }),
