@@ -12,11 +12,11 @@ module.exports = async (req, res) => {
 
     try {
 
-        const { motivo, cantidad } = req.body;
+        const { motivo, cantidad, categoria } = req.body;
 
         await pool.query(
         "INSERT INTO movimientos (fecha, motivo, cantidad, categoria_id) VALUES (NOW(), $1, $2, $3",
-        [motivo, cantidad]
+        [motivo, cantidad, categoria]
         );
 
         res.status(200).json({ message: "Movimiento registrado" });

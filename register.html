@@ -31,6 +31,7 @@
       e.preventDefault();
       const motivo = document.getElementById('motivo').value;
       const cantidad = parseFloat(document.getElementById('cantidad').value);
+      const categoria = document.getElementById('categoria').value;
 
       await fetch('/api/register', {
         method: 'POST',
