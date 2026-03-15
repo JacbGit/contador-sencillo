@@ -1,44 +1,229 @@
 <!DOCTYPE html>
 <html lang="es">
-<head><meta charset="UTF-8"><title>Movimientos</title></head>
+<head>
+<meta charset="UTF-8">
+<title>Movimientos</title>
+
+<style>
+
+body{
+  font-family: Arial, sans-serif;
+  margin:20px;
+}
+
+h1{
+  text-align:center;
+}
+
+.topbar{
+  display:flex;
+  flex-wrap:wrap;
+  justify-content:space-between;
+  align-items:center;
+  margin-bottom:20px;
+}
+
+.total{
+  font-size:1.2rem;
+  font-weight:bold;
+}
+
+.filtro{
+  margin-top:10px;
+}
+
+table{
+  width:100%;
+  border-collapse:collapse;
+}
+
+th,td{
+  padding:10px;
+  border:1px solid #ccc;
+  text-align:left;
+}
+
+th{
+  background:#f2f2f2;
+}
+
+tr:nth-child(even){
+  background:#fafafa;
+}
+
+.categoria-total{
+  margin-top:15px;
+  font-weight:bold;
+}
+
+a{
+  display:block;
+  margin-top:20px;
+  text-align:center;
+}
+
+/* responsive */
+
+@media (max-width:600px){
+
+  table,thead,tbody,tr,td,th{
+    display:block;
+  }
+
+  thead{
+    display:none;
+  }
+
+  tr{
+    margin-bottom:10px;
+    border:1px solid #ddd;
+    padding:10px;
+  }
+
+  td{
+    border:none;
+    padding:5px 0;
+  }
+
+}
+
+</style>
+
+</head>
+
 <body>
-  <h1>Movimientos</h1>
-  <p>Total registrado: <strong id="total"></strong></p>
 
-  <table border="1" id="tabla">
-    <thead><tr><th>Fecha</th><th>Motivo</th><th>Cantidad</th></tr></thead>
-    <tbody></tbody>
-  </table>
+<h1>Movimientos</h1>
 
-  <a href="/register.html">Registrar movimiento</a>
+<div class="topbar">
 
-  <script>
-    async function cargarTotal() {
-      const res = await fetch('/api/total');
-      const totalData = await res.json();
-      document.getElementById('total').textContent = totalData.total || totalData['SUM(Cantidad)'];
-    }
+  <div class="total">
+    Total general: <span id="total"></span>
+  </div>
 
-    async function cargarMovimientos() {
-      const res = await fetch('/api/movimientos');
-      const movimientos = await res.json();
-      const tabla = document.querySelector('#tabla tbody');
-      tabla.innerHTML = '';
+  <div class="filtro">
+    Categoría:
+    <select id="filtroCategoria">
+      <option value="">Todas</option>
+      <option value="INGRESO">INGRESO</option>
+      <option value="COMIDA">COMIDA</option>
+      <option value="TRANSPORTE">TRANSPORTE</option>
+      <option value="SERVICIOS">SERVICIOS</option>
+      <option value="VIVIENDA">VIVIENDA</option>
+      <option value="ROPA">ROPA</option>
+      <option value="ENTRETENIMIENTO">ENTRETENIMIENTO</option>
+      <option value="SALUD">SALUD</option>
+      <option value="EDUCACION">EDUCACION</option>
+      <option value="EXTRAS">EXTRAS</option>
+    </select>
+  </div>
 
-      movimientos.forEach(mov => {
-        const tr = document.createElement('tr');
-        tr.innerHTML = `
-          <td>${new Date(mov.fecha).toLocaleString()}</td>
-          <td>${mov.motivo}</td>
-          <td>${mov.cantidad}</td>
-          <td>${mov.categoria}</td>
-        `;
-        tabla.appendChild(tr);
-      });
-    }
+</div>
 
-    cargarTotal();
-    cargarMovimientos();
-  </script>
+<table id="tabla">
+
+<thead>
+<tr>
+<th>Fecha</th>
+<th>Motivo</th>
+<th>Cantidad</th>
+<th>Categoría</th>
+</tr>
+</thead>
+
+<tbody></tbody>
+
+</table>
+
+<div class="categoria-total">
+Total categoría: <span id="totalCategoria">0</span>
+</div>
+
+<a href="/register.html">Registrar movimiento</a>
+
+<script>
+
+let movimientosGlobal = [];
+
+/* total general */
+
+async function cargarTotal(){
+
+  const res = await fetch('/api/total');
+  const data = await res.json();
+
+  document.getElementById('total').textContent = data.total ?? 0;
+
+}
+
+/* cargar movimientos */
+
+async function cargarMovimientos(){
+
+  const res = await fetch('/api/movimientos');
+  movimientosGlobal = await res.json();
+
+  renderTabla(movimientosGlobal);
+
+}
+
+/* renderizar tabla */
+
+function renderTabla(lista){
+
+  const tabla = document.querySelector('#tabla tbody');
+  tabla.innerHTML = '';
+
+  let sumaCategoria = 0;
+
+  lista.forEach(mov => {
+
+    const tr = document.createElement('tr');
+
+    tr.innerHTML = `
+      <td>${new Date(mov.fecha).toLocaleString()}</td>
+      <td>${mov.motivo}</td>
+      <td>${mov.cantidad}</td>
+      <td>${mov.categoria}</td>
+    `;
+
+    tabla.appendChild(tr);
+
+    sumaCategoria += Number(mov.cantidad);
+
+  });
+
+  document.getElementById('totalCategoria').textContent = sumaCategoria;
+
+}
+
+/* filtro por categoria */
+
+document.getElementById('filtroCategoria').addEventListener('change', e => {
+
+  const categoria = e.target.value;
+
+  if(!categoria){
+
+    renderTabla(movimientosGlobal);
+    return;
+
+  }
+
+  const filtrados = movimientosGlobal.filter(
+    m => m.categoria === categoria
+  );
+
+  renderTabla(filtrados);
+
+});
+
+/* inicializar */
+
+cargarTotal();
+cargarMovimientos();
+
+</script>
+
 </body>
 </html>
