@@ -105,16 +105,16 @@ a{
     Categoría:
     <select id="filtroCategoria">
       <option value="">Todas</option>
-      <option value="INGRESO">INGRESO</option>
-      <option value="COMIDA">COMIDA</option>
-      <option value="TRANSPORTE">TRANSPORTE</option>
-      <option value="SERVICIOS">SERVICIOS</option>
-      <option value="VIVIENDA">VIVIENDA</option>
-      <option value="ROPA">ROPA</option>
-      <option value="ENTRETENIMIENTO">ENTRETENIMIENTO</option>
-      <option value="SALUD">SALUD</option>
-      <option value="EDUCACION">EDUCACION</option>
-      <option value="EXTRAS">EXTRAS</option>
+      <option value="1">INGRESO</option>
+      <option value="2">COMIDA</option>
+      <option value="3">TRANSPORTE</option>
+      <option value="4">SERVICIOS</option>
+      <option value="5">VIVIENDA</option>
+      <option value="6">ROPA</option>
+      <option value="7">ENTRETENIMIENTO</option>
+      <option value="8">SALUD</option>
+      <option value="9">EDUCACION</option>
+      <option value="10">EXTRAS</option>
     </select>
   </div>
 
@@ -142,6 +142,19 @@ Total categoría: <span id="totalCategoria">0</span>
 <a href="/register.html">Registrar movimiento</a>
 
 <script>
+
+const categorias = {
+  1: "INGRESO",
+  2: "COMIDA",
+  3: "TRANSPORTE",
+  4: "SERVICIOS",
+  5: "VIVIENDA",
+  6: "ROPA",
+  7: "ENTRETENIMIENTO",
+  8: "SALUD",
+  9: "EDUCACION",
+  10: "EXTRAS"
+};
 
 let movimientosGlobal = [];
 
@@ -184,7 +197,7 @@ function renderTabla(lista){
       <td>${new Date(mov.fecha).toLocaleString()}</td>
       <td>${mov.motivo}</td>
       <td>${mov.cantidad}</td>
-      <td>${mov.categoria}</td>
+      <td>${categorias[mov.categoria_id]}</td>
     `;
 
     tabla.appendChild(tr);
@@ -211,7 +224,7 @@ document.getElementById('filtroCategoria').addEventListener('change', e => {
   }
 
   const filtrados = movimientosGlobal.filter(
-    m => m.categoria === categoria
+    m => m.categoria == categoria
   );
 
   renderTabla(filtrados);
