@@ -33,10 +33,14 @@
       const cantidad = parseFloat(document.getElementById('cantidad').value);
       const categoria = document.getElementById('categoria').value;
 
+      if(categoria != 1){
+        cantidad *= -1;
+      } 
+
       await fetch('/api/register', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ motivo, cantidad }),
+        body: JSON.stringify({ motivo, cantidad, categoria }),
       });
 
       alert("Movimiento guardado");
